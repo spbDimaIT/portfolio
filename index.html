@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Дмитрий Захаров | VR-разработчик и 3D-художник</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', 'Space Grotesk', sans-serif; background-color: #05050f; color: #f0f0ff; line-height: 1.5; overflow-x: hidden; }
+    #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.7; }
+    .content { position: relative; z-index: 2; max-width: 1300px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+    .glass-card { background: rgba(15, 20, 40, 0.55); backdrop-filter: blur(12px); border-radius: 2rem; border: 1px solid rgba(80, 160, 255, 0.25); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; }
+    .glass-card:hover { border-color: rgba(0, 255, 255, 0.5); }
+    .btn { display: inline-flex; align-items: center; gap: 0.6rem; background: linear-gradient(135deg, #1e2a5e, #0a0f2a); padding: 0.8rem 1.8rem; border-radius: 3rem; font-weight: 600; font-size: 0.95rem; color: white; text-decoration: none; border: 1px solid rgba(0, 255, 255, 0.4); transition: all 0.25s ease; }
+    .btn-primary { background: linear-gradient(135deg, #2a3f7e, #12162f); border-color: #0cf; }
+    .btn-primary:hover { transform: translateY(-3px); border-color: #0ff; box-shadow: 0 8px 20px rgba(0, 200, 255, 0.4); }
+    .hero-buttons { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+    section { margin: 6rem 0; }
+    .section-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 2.5rem; background: linear-gradient(135deg, #fff, #4c9aff); -webkit-background-clip: text; background-clip: text; color: transparent; display: inline-block; border-left: 5px solid #0cf; padding-left: 1.2rem; }
+    .hero { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 2rem; margin: 4rem 0 5rem; }
+    .hero-info { flex: 1; }
+    .badge-group { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .badge { background: rgba(0, 255, 255, 0.15); backdrop-filter: blur(5px); padding: 0.3rem 1rem; border-radius: 2rem; font-size: 0.8rem; font-weight: 500; border: 1px solid #0cf; }
+    .hero h1 { font-size: 3.8rem; font-weight: 800; line-height: 1.2; background: linear-gradient(135deg, #ffffff, #4c9aff, #aaffff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero p { font-size: 1.2rem; max-width: 550px; margin: 1.2rem 0 2rem; color: #d0daff; }
+    .hero-stats { display: flex; gap: 2.8rem; margin-top: 1.5rem; }
+    .stat { font-weight: 600; text-align: center; }
+    .stat-number { font-size: 1.8rem; font-weight: 800; color: #0cf; }
+    .skills-grid { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
+    .skill-tag { background: rgba(20, 40, 70, 0.7); backdrop-filter: blur(8px); padding: 0.6rem 1.4rem; border-radius: 3rem; font-weight: 500; border: 1px solid rgba(0, 200, 255, 0.4); transition: 0.2s; }
+    .skill-tag:hover { background: #1e3a5f; border-color: #0cf; transform: scale(1.02); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 1rem; }
+    .project-card { background: rgba(10, 15, 30, 0.65); backdrop-filter: blur(12px); border-radius: 1.5rem; padding: 1.8rem; transition: all 0.3s ease; border: 1px solid rgba(70, 130, 200, 0.3); }
+    .project-card:hover { transform: translateY(-8px); border-color: #0cf; background: rgba(15, 25, 50, 0.8); }
+    .project-icon { font-size: 2.8rem; color: #0cf; margin-bottom: 1rem; }
+    .project-card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .project-tech { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+    .tech-badge { background: #0a142eb3; padding: 0.2rem 0.8rem; border-radius: 2rem; font-size: 0.7rem; font-weight: 500; color: #9bc5ff; }
+    .olympiads-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1.5rem; }
+    .olympiad-card { background: rgba(15, 20, 45, 0.7); backdrop-filter: blur(8px); border-radius: 1.5rem; padding: 1.2rem 1.8rem; border: 1px solid rgba(0, 200, 255, 0.3); flex: 1; min-width: 250px; }
+    .olympiad-card i { color: #0cf; margin-right: 0.6rem; }
+    .social-links { display: flex; gap: 1.8rem; margin-top: 2rem; flex-wrap: wrap; }
+    .social-icon { background: rgba(255, 255, 255, 0.05); width: 3.5rem; height: 3.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; transition: 0.2s; border: 1px solid rgba(0, 200, 255, 0.3); }
+    .social-icon a { color: #ccf4ff; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; border-radius: 50%; }
+    .social-icon.disabled { cursor: default; opacity: 0.6; }
+    .social-icon:not(.disabled):hover { background: #0cf2; transform: scale(1.08); border-color: #0cf; }
+    footer { margin-top: 5rem; text-align: center; padding-top: 2rem; border-top: 1px solid rgba(0, 200, 255, 0.2); font-size: 0.85rem; color: #aab8ff; }
+    @media (max-width: 850px) { .hero { flex-direction: column; text-align: center; } .hero h1 { font-size: 2.5rem; } .section-title { font-size: 2rem; } .hero-buttons { justify-content: center; } }
+    .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.6s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    ::selection { background: #0cf; color: #0a0f1a; }
+    .contact-row { display: flex; align-items: center; gap: 0.5rem; margin: 0.75rem 0; }
+    .contact-row i { width: 1.8rem; color: #0cf; }
+    .contact-link { color: #ccf4ff; text-decoration: none; border-bottom: 1px dashed rgba(0, 204, 255, 0.4); transition: color 0.2s, border-color 0.2s; }
+    .contact-link:hover { color: #0cf; border-bottom-color: #0cf; }
+    .like-section { display: flex; justify-content: center; margin: 2rem 0 1rem; }
+    .like-button { background: linear-gradient(135deg, #1e2a5e, #0a0f2a); border: 1px solid rgba(0, 255, 255, 0.4); border-radius: 3rem; padding: 0.8rem 2rem; display: inline-flex; align-items: center; gap: 0.8rem; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(8px); }
+    .like-button:hover { transform: scale(1.05); border-color: #0cf; }
+    .like-button i { font-size: 1.6rem; color: #ff6b6b; transition: transform 0.2s; }
+    .like-button.liked i { animation: heartPop 0.3s ease; }
+    @keyframes heartPop { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+    .like-count { font-size: 1.3rem; font-weight: 700; color: #0cf; }
+    .like-text { font-size: 1rem; font-weight: 500; }
+  </style>
+</head>
+<body>
+
+<div id="bg-canvas"></div>
+
+<div class="content">
+  <div class="hero fade-up">
+    <div class="hero-info">
+      <div class="badge-group">
+        <div class="badge"><i class="fas fa-vr-cardboard"></i> VR developer</div>
+        <div class="badge"><i class="fas fa-cube"></i> 3D artist</div>
+      </div>
+      <h1>Дмитрий Захаров</h1>
+      <p>Создаю виртуальные миры через код и воображение.</p>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-number">3+</span><br>проекта</div>
+        <div class="stat"><span class="stat-number">2025</span><br>старт</div>
+        <div class="stat"><span class="stat-number">Junior</span><br>уровень</div>
+      </div>
+      <div class="hero-buttons">
+        <a href="#projects" class="btn btn-primary"><i class="fas fa-vr-cardboard"></i> Мои проекты</a>
+        <a href="#contact" class="btn"><i class="fas fa-paper-plane"></i> Контакты</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="like-section fade-up">
+    <div class="like-button" id="likeButton">
+      <i class="fas fa-heart"></i>
+      <span class="like-count" id="likeCount">0</span>
+      <span class="like-text">мне нравится</span>
+    </div>
+  </div>
+
+  <section id="about" class="fade-up">
+    <div class="glass-card" style="padding: 2rem;">
+      <h2 class="section-title" style="margin-bottom: 1rem;">О себе</h2>
+      <p style="font-size: 1.1rem; max-width: 95%;">Привет! Меня зовут Дмитрий, я — начинающий VR-разработчик и 3D-художник. Я учусь в Лицее информационных технологий в Санкт-Петербурге. С 2025 года я активно осваиваю инструменты Varwin и Blender, а также начал изучать язык Python. Регулярно участвую в хакатонах и IT-олимпиадах. В будущем хочу попробовать себя в разных сферах, но пока основным направлением для меня является разработка приложений виртуальной и дополненной реальности. Интересуюсь кибербезопасностью. Владею навыками видеомонтажа. Открыт для интересных проектов и стажировок в сфере IT.</p>
+    </div>
+  </section>
+
+  <section class="fade-up">
+    <h2 class="section-title"><i class="fas fa-wrench"></i> Инструменты & Технологии</h2>
+    <div class="skills-grid">
+      <span class="skill-tag">Varwin</span>
+      <span class="skill-tag">Blender</span>
+      <span class="skill-tag">Python</span>
+    </div>
+  </section>
+
+  <section id="projects" class="fade-up">
+    <h2 class="section-title"><i class="fas fa-rocket"></i> VR-проекты</h2>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-icon"><i class="fas fa-hard-hat"></i></div>
+        <h3>FeVR/ARt 2025: VR-тренажер для МЧС</h3>
+        <p>Тренажер для отработки безопасной эвакуации пострадавшего из горящего здания.</p>
+        <div class="project-tech"><span class="tech-badge">Varwin</span></div>
+      </div>
+      <div class="project-card">
+        <div class="project-icon"><i class="fas fa-leaf"></i></div>
+        <h3>Varwin хакатон 2026: Обучающий VR-проект</h3>
+        <p>Проект в игровой форме знакомит с инвазивными растениями.</p>
+        <div class="project-tech"><span class="tech-badge">Varwin</span><span class="tech-badge">Blender</span><span class="tech-badge">Python</span></div>
+      </div>
+      <div class="project-card">
+        <div class="project-icon"><i class="fas fa-gamepad"></i></div>
+        <h3>Международный конкурс Varwin 2026: 3D-игра</h3>
+        <p>Игра в жанре ужасов (эскейп-рум).</p>
+        <div class="project-tech"><span class="tech-badge">Varwin</span><span class="tech-badge">Blender</span><span class="tech-badge">Python</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fade-up">
+    <h2 class="section-title"><i class="fas fa-trophy"></i> Олимпиады</h2>
+    <div class="olympiads-grid">
+      <div class="olympiad-card"><i class="fas fa-medal"></i> Призёр НТО Junior 2025 по направлению «Технологии и виртуальная реальность»</div>
+      <div class="olympiad-card"><i class="fas fa-award"></i> III место на олимпиаде «ОСА» 2026 по направлению «Системное администрирование»</div>
+      <div class="olympiad-card"><i class="fas fa-code"></i> Участник городского хакатона по VR/AR 2025</div>
+    </div>
+  </section>
+
+  <section id="contact" class="fade-up">
+    <h2 class="section-title"><i class="fas fa-paper-plane"></i> Контакты & аккаунты на других сайтах</h2>
+    <div class="glass-card" style="padding: 2rem;">
+      <p style="margin-bottom: 1.5rem;">Открыт для интересных проектов и стажировок в сфере IT. Пишите!</p>
+      <div class="contact-row"><i class="fab fa-telegram"></i><a href="https://t.me/spbDimaIT2" class="contact-link" target="_blank">t.me/spbDimaIT2</a></div>
+      <div class="contact-row"><i class="fas fa-envelope"></i><span style="color:#ccf4ff;">Dima-123098123098@yandex.ru</span></div>
+      <div class="contact-row"><i class="fab fa-github"></i><a href="https://github.com/spbDimaIT" class="contact-link" target="_blank">github.com/spbDimaIT</a></div>
+      <div class="social-links">
+        <a href="https://t.me/spbDimaIT2" class="social-icon" target="_blank"><i class="fab fa-telegram"></i></a>
+        <div class="social-icon disabled"><i class="fas fa-envelope"></i></div>
+        <a href="https://github.com/spbDimaIT" class="social-icon" target="_blank"><i class="fab fa-github"></i></a>
+      </div>
+      <div style="margin-top: 1.8rem;"><i class="fas fa-map-marker-alt"></i> Санкт-Петербург / Online</div>
+    </div>
+  </section>
+
+  <footer><p>© 2026 Дмитрий Захаров | визитка-портфолио</p></footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  // ========== ТРЁХМЕРНЫЙ ФОН ==========
+  (function() {
+    const container = document.getElementById('bg-canvas');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x05050f);
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 20;
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    container.appendChild(renderer.domElement);
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particlesCount = 1800;
+    const posArray = new Float32Array(particlesCount * 3);
+    for(let i = 0; i < particlesCount * 3; i += 3) {
+      posArray[i] = (Math.random() - 0.5) * 100;
+      posArray[i+1] = (Math.random() - 0.5) * 60;
+      posArray[i+2] = (Math.random() - 0.5) * 50 - 20;
+    }
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    const particlesMaterial = new THREE.PointsMaterial({ size: 0.12, color: 0x88aaff, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending });
+    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particlesMesh);
+    const ambientLight = new THREE.AmbientLight(0x111122);
+    scene.add(ambientLight);
+    const pointLight = new THREE.PointLight(0x2266ff, 0.8, 40);
+    pointLight.position.set(2, 3, 8);
+    scene.add(pointLight);
+    const backLight = new THREE.PointLight(0xff44aa, 0.4);
+    backLight.position.set(-3, -1, -5);
+    scene.add(backLight);
+    let time = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      time += 0.003;
+      particlesMesh.rotation.y = time * 0.1;
+      particlesMesh.rotation.x = Math.sin(time * 0.2) * 0.1;
+      camera.position.x = Math.sin(time * 0.1) * 0.5;
+      camera.position.y = Math.cos(time * 0.13) * 0.3;
+      camera.lookAt(0, 0, 0);
+      renderer.render(scene, camera);
+    }
+    animate();
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  })();
+
+  // ========== FIREBASE ЛАЙКИ (ВАША КОНФИГУРАЦИЯ) ==========
+  const firebaseConfig = {
+    apiKey: "AIzaSyClrKyJ0ZmKdThZfDAo1ja5Fs1Yo16gpvM",
+    authDomain: "portfolio-dima.firebaseapp.com",
+    projectId: "portfolio-dima",
+    storageBucket: "portfolio-dima.firebasestorage.app",
+    messagingSenderId: "561156360648",
+    appId: "1:561156360648:web:0c1e1d96c1351a8e1558fd"
+  };
+
+  // Инициализация Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const likeButton = document.getElementById('likeButton');
+  const likeCountSpan = document.getElementById('likeCount');
+  
+  let currentCount = 0;
+  let userLiked = false;
+  let isLoading = true;
+
+  // Получаем ID пользователя
+  function getUserId() {
+    let id = localStorage.getItem('portfolio_user_id');
+    if (!id) {
+      id = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('portfolio_user_id', id);
+    }
+    return id;
+  }
+
+  const userId = getUserId();
+  const likeDocRef = db.collection('likes').doc('counter');
+  const userLikeRef = db.collection('userLikes').doc(userId);
+
+  // Загрузка данных
+  async function loadLikes() {
+    try {
+      const [likeSnap, userSnap] = await Promise.all([
+        likeDocRef.get(),
+        userLikeRef.get()
+      ]);
+      
+      currentCount = likeSnap.exists ? likeSnap.data().count : 42;
+      userLiked = userSnap.exists && userSnap.data().liked === true;
+      
+      if (!likeSnap.exists) {
+        await likeDocRef.set({ count: 42 });
+      }
+      
+      likeCountSpan.textContent = currentCount;
+      if (userLiked) likeButton.classList.add('liked');
+    } catch (error) {
+      console.error('Ошибка загрузки:', error);
+      currentCount = 42;
+      likeCountSpan.textContent = currentCount;
+    }
+    isLoading = false;
+  }
+
+  // Сохранение лайка
+  async function toggleLike() {
+    if (isLoading) return;
+    isLoading = true;
+    
+    try {
+      if (!userLiked) {
+        // Добавляем лайк
+        await db.runTransaction(async (transaction) => {
+          const likeDoc = await transaction.get(likeDocRef);
+          const newCount = (likeDoc.exists ? likeDoc.data().count : 42) + 1;
+          transaction.set(likeDocRef, { count: newCount });
+          transaction.set(userLikeRef, { liked: true, userId: userId });
+          currentCount = newCount;
+        });
+        userLiked = true;
+        
+        // Анимация сердечка
+        const heartIcon = likeButton.querySelector('i');
+        heartIcon.style.animation = 'none';
+        heartIcon.offsetHeight;
+        heartIcon.style.animation = 'heartPop 0.3s ease';
+        setTimeout(() => { if(heartIcon) heartIcon.style.animation = ''; }, 300);
+      } else {
+        // Убираем лайк
+        await db.runTransaction(async (transaction) => {
+          const likeDoc = await transaction.get(likeDocRef);
+          const newCount = (likeDoc.exists ? likeDoc.data().count : 42) - 1;
+          transaction.set(likeDocRef, { count: newCount });
+          transaction.delete(userLikeRef);
+          currentCount = newCount;
+        });
+        userLiked = false;
+      }
+      
+      likeCountSpan.textContent = currentCount;
+      if (userLiked) likeButton.classList.add('liked');
+      else likeButton.classList.remove('liked');
+    } catch (error) {
+      console.error('Ошибка сохранения:', error);
+    }
+    isLoading = false;
+  }
+
+  likeButton.addEventListener('click', toggleLike);
+  loadLikes();
+
+  // ========== АНИМАЦИЯ ПОЯВЛЕНИЯ ==========
+  const fadeElements = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  fadeElements.forEach(el => observer.observe(el));
+
+  // Плавный скролл
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const targetId = this.getAttribute('href');
+      if(targetId === "#" || targetId === "") return;
+      const targetElement = document.querySelector(targetId);
+      if(targetElement) {
+        e.preventDefault();
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
