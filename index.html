@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>Дмитрий Захаров | VR-разработчик и 3D-художник</title>
+  <!-- Фавиконка из репозитория -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -280,6 +282,23 @@
       </div>
     </section>
 
+    <!-- Раздел доната -->
+    <section id="donate" class="fade-up">
+      <h2 class="section-title"><i class="fas fa-heart"></i> Поддержать проект</h2>
+      <div class="glass-card" style="padding: 2rem; text-align: center;">
+        <p style="margin-bottom: 1rem;">Если вам нравится моё творчество — вы можете поддержать меня!</p>
+        <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+          <a href="https://boosty.to/ваш_ник" class="btn" target="_blank" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+            <i class="fas fa-gift"></i> Boosty
+          </a>
+          <a href="https://www.donationalerts.com/r/ваш_ник" class="btn" target="_blank" style="background: linear-gradient(135deg, #6c5ce7, #4834d4);">
+            <i class="fas fa-donate"></i> DonationAlerts
+          </a>
+        </div>
+        <p style="font-size: 0.8rem; margin-top: 1rem; color: #aab8ff;">Даже небольшая сумма помогает создавать новые проекты</p>
+      </div>
+    </section>
+
     <section id="contact" class="fade-up">
       <h2 class="section-title"><i class="fas fa-paper-plane"></i> Контакты & аккаунты на других сайтах</h2>
       <div class="glass-card" style="padding: 2rem;">
@@ -336,7 +355,6 @@
     const errorDiv = document.getElementById('captchaError');
     
     if (parseInt(input) === currentCaptchaAnswer) {
-      // Успешное прохождение капчи
       localStorage.setItem('captcha_passed', 'true');
       localStorage.setItem('captcha_time', Date.now());
       document.getElementById('captchaOverlay').style.opacity = '0';
@@ -357,7 +375,6 @@
     document.getElementById('captchaError').innerHTML = '';
   }
   
-  // Проверяем, проходил ли пользователь капчу ранее (30 минут)
   function wasCaptchaPassedRecently() {
     const passed = localStorage.getItem('captcha_passed');
     const time = localStorage.getItem('captcha_time');
@@ -520,7 +537,6 @@
   likeButton.addEventListener('click', toggleLike);
 
   // ========== ИНИЦИАЛИЗАЦИЯ ==========
-  // Проверяем капчу
   if (wasCaptchaPassedRecently()) {
     document.getElementById('captchaOverlay').style.display = 'none';
     document.getElementById('mainContent').classList.add('visible');
@@ -529,7 +545,6 @@
     document.getElementById('captchaOverlay').style.display = 'flex';
   }
   
-  // Обработчики капчи
   document.getElementById('captchaSubmit').addEventListener('click', checkCaptcha);
   document.getElementById('captchaRefresh').addEventListener('click', refreshCaptcha);
   document.getElementById('captchaInput').addEventListener('keypress', (e) => {
