@@ -216,6 +216,16 @@
       color: #fff;
     }
 
+    /* Стиль для ссылок в карточках проектов */
+    .project-link {
+      text-decoration: none;
+      color: inherit;
+      display: block; /* Чтобы ссылка занимала всю область заголовка */
+    }
+    .project-link:hover h3 {
+      color: #0cf; /* Подсветка заголовка при наведении */
+    }
+
     /* Убрали стили для кружочков */
     .social-links, .social-icon, .social-icon a, .social-icon.disabled {
       display: none;
@@ -295,18 +305,23 @@
     <section id="projects" class="fade-up">
       <h2 class="section-title"><i class="fas fa-rocket"></i> VR-проекты</h2>
       <div class="projects-grid">
+        <!-- ПЕРВЫЙ ПРОЕКТ — ССЫЛКА НА ЯНДЕКС ДИСК -->
         <div class="project-card">
           <div class="project-icon"><i class="fas fa-hard-hat"></i></div>
-          <h3>FeVR/ARt 2025: VR-тренажер для МЧС</h3>
+          <a href="https://disk.yandex.ru/d/MKeSpc4VKsx2iw" target="_blank" rel="noopener noreferrer" class="project-link">
+            <h3>FeVR/ARt 2025: VR-тренажер для МЧС</h3>
+          </a>
           <p>Тренажер для отработки безопасной эвакуации пострадавшего из горящего здания.</p>
           <div class="project-tech"><span class="tech-badge">Varwin</span></div>
         </div>
+        
         <div class="project-card">
           <div class="project-icon"><i class="fas fa-leaf"></i></div>
           <h3>Varwin хакатон 2026: Обучающий VR-проект</h3>
           <p>Проект в игровой форме знакомит с инвазивными растениями.</p>
           <div class="project-tech"><span class="tech-badge">Varwin</span><span class="tech-badge">Blender</span><span class="tech-badge">Python</span></div>
         </div>
+        
         <div class="project-card">
           <div class="project-icon"><i class="fas fa-gamepad"></i></div>
           <h3>Международный конкурс Varwin 2026: 3D-игра</h3>
