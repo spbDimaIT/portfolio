@@ -178,17 +178,25 @@
     .like-count { font-size: 1.3rem; font-weight: 700; color: #0cf; }
     .like-text { font-size: 1rem; font-weight: 500; }
     
-    /* Стили для номера доната */
-    .donate-number {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #0cf;
-      background: rgba(0, 204, 255, 0.1);
-      display: inline-block;
-      padding: 0.5rem 1.5rem;
-      border-radius: 2rem;
-      border: 1px solid rgba(0, 204, 255, 0.3);
+    /* Стили для доната */
+    .donate-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      padding: 0.8rem 2rem;
+      border-radius: 3rem;
+      font-weight: 600;
+      font-size: 1rem;
+      color: white;
+      text-decoration: none;
+      border: none;
+      transition: all 0.3s ease;
       margin-top: 0.5rem;
+    }
+    .donate-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
     }
     
     /* Стили для счётчика */
@@ -316,15 +324,15 @@
       </div>
     </section>
 
-    <!-- Раздел поддержки с номером телефона -->
+    <!-- Раздел поддержки со ссылкой -->
     <section id="support" class="fade-up">
       <h2 class="section-title"><i class="fas fa-heart"></i> Поддержать проект</h2>
       <div class="glass-card" style="padding: 2rem; text-align: center;">
         <p style="margin-bottom: 1rem;">Если вам нравится моё творчество — вы можете поддержать меня!</p>
-        <div class="donate-number">
-          <i class="fas fa-phone-alt"></i> +7 981 248-83-30
-        </div>
-        <p style="font-size: 0.8rem; margin-top: 1rem; color: #aab8ff;">СБП или перевод по номеру телефона</p>
+        <a href="https://c2c.cbrpay.ru/AS1I006IP63CMGCO8929A5CQOBPIR6QT" class="donate-button" target="_blank" rel="noopener noreferrer">
+          <i class="fas fa-gift"></i> Поддержать
+        </a>
+        <p style="font-size: 0.8rem; margin-top: 1rem; color: #aab8ff;">Нажмите на кнопку, чтобы перейти на страницу поддержки</p>
       </div>
     </section>
 
@@ -398,7 +406,6 @@
       setTimeout(() => {
         document.getElementById('captchaOverlay').style.display = 'none';
         document.getElementById('mainContent').classList.add('visible');
-        // После прохождения капчи запускаем счётчик
         updateVisitorCounter();
       }, 500);
     } else {
@@ -476,7 +483,7 @@
     });
   })();
 
-  // ========== FIREBASE ЛАЙКИ ==========
+  // ========== FIREBASE ==========
   const firebaseConfig = {
     apiKey: "AIzaSyClrKyJ0ZmKdThZfDAo1ja5Fs1Yo16gpvM",
     authDomain: "portfolio-dima.firebaseapp.com",
@@ -496,11 +503,9 @@
       const visitorRef = db.collection('visitors').doc('counter');
       const userVisitorRef = db.collection('visitorLog').doc(userId);
       
-      // Проверяем, засчитан ли этот пользователь
       const userSnap = await userVisitorRef.get();
       
       if (!userSnap.exists) {
-        // Новый уникальный посетитель — прибавляем +1
         await db.runTransaction(async (transaction) => {
           const counterDoc = await transaction.get(visitorRef);
           const newCount = (counterDoc.exists ? counterDoc.data().count : 0) + 1;
@@ -513,7 +518,6 @@
         });
       }
       
-      // Показываем актуальное количество
       const counterSnap = await visitorRef.get();
       const count = counterSnap.exists ? counterSnap.data().count : 0;
       document.getElementById('visitorCount').textContent = count;
@@ -615,7 +619,6 @@
   if (wasCaptchaPassedRecently()) {
     document.getElementById('captchaOverlay').style.display = 'none';
     document.getElementById('mainContent').classList.add('visible');
-    // Если капча уже пройдена — сразу загружаем счётчик
     updateVisitorCounter();
   } else {
     generateCaptcha();
