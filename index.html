@@ -155,11 +155,6 @@
     .olympiads-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1.5rem; }
     .olympiad-card { background: rgba(15, 20, 45, 0.7); backdrop-filter: blur(8px); border-radius: 1.5rem; padding: 1.2rem 1.8rem; border: 1px solid rgba(0, 200, 255, 0.3); flex: 1; min-width: 250px; }
     .olympiad-card i { color: #0cf; margin-right: 0.6rem; }
-    .social-links { display: flex; gap: 1.8rem; margin-top: 2rem; flex-wrap: wrap; }
-    .social-icon { background: rgba(255, 255, 255, 0.05); width: 3.5rem; height: 3.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; transition: 0.2s; border: 1px solid rgba(0, 200, 255, 0.3); }
-    .social-icon a { color: #ccf4ff; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; border-radius: 50%; }
-    .social-icon.disabled { cursor: default; opacity: 0.6; }
-    .social-icon:not(.disabled):hover { background: #0cf2; transform: scale(1.08); border-color: #0cf; }
     footer { margin-top: 5rem; text-align: center; padding-top: 2rem; border-top: 1px solid rgba(0, 200, 255, 0.2); font-size: 0.85rem; color: #aab8ff; }
     @media (max-width: 850px) { .hero { flex-direction: column; text-align: center; } .hero h1 { font-size: 2.5rem; } .section-title { font-size: 2rem; } .hero-buttons { justify-content: center; } }
     .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.6s ease; }
@@ -218,6 +213,11 @@
       font-weight: 700;
       font-size: 1.3rem;
       color: #fff;
+    }
+
+    /* Убираем старые стили для кружочков, если они были */
+    .social-links, .social-icon, .social-icon a, .social-icon.disabled {
+      display: none;
     }
   </style>
 </head>
@@ -336,6 +336,7 @@
       </div>
     </section>
 
+    <!-- ОБНОВЛЁННЫЙ РАЗДЕЛ КОНТАКТОВ (БЕЗ КРУЖОЧКОВ) -->
     <section id="contact" class="fade-up">
       <h2 class="section-title"><i class="fas fa-paper-plane"></i> Контакты & аккаунты на других сайтах</h2>
       <div class="glass-card" style="padding: 2rem;">
@@ -343,11 +344,7 @@
         <div class="contact-row"><i class="fab fa-telegram"></i><a href="https://t.me/spbDimaIT2" class="contact-link" target="_blank">t.me/spbDimaIT2</a></div>
         <div class="contact-row"><i class="fas fa-envelope"></i><span style="color:#ccf4ff;">Dima-123098123098@yandex.ru</span></div>
         <div class="contact-row"><i class="fab fa-github"></i><a href="https://github.com/spbDimaIT" class="contact-link" target="_blank">github.com/spbDimaIT</a></div>
-        <div class="social-links">
-          <a href="https://t.me/spbDimaIT2" class="social-icon" target="_blank"><i class="fab fa-telegram"></i></a>
-          <div class="social-icon disabled"><i class="fas fa-envelope"></i></div>
-          <a href="https://github.com/spbDimaIT" class="social-icon" target="_blank"><i class="fab fa-github"></i></a>
-        </div>
+        <!-- Кружочки удалены! -->
         <div style="margin-top: 1.8rem;"><i class="fas fa-map-marker-alt"></i> Санкт-Петербург / Online</div>
       </div>
     </section>
