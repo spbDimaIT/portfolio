@@ -190,6 +190,27 @@
       border: 1px solid rgba(0, 204, 255, 0.3);
       margin-top: 0.5rem;
     }
+    
+    /* Стили для счётчика */
+    .visitor-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: rgba(0, 204, 255, 0.08);
+      padding: 0.5rem 1.5rem;
+      border-radius: 2rem;
+      border: 1px solid rgba(0, 204, 255, 0.2);
+      margin-top: 1rem;
+    }
+    .visitor-counter i {
+      color: #0cf;
+      font-size: 1.2rem;
+    }
+    .visitor-number {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -323,7 +344,15 @@
       </div>
     </section>
 
-    <footer><p>© 2026 Дмитрий Захаров | визитка-портфолио</p></footer>
+    <footer>
+      <!-- Счётчик посещений -->
+      <div class="visitor-counter">
+        <i class="fas fa-eye"></i>
+        <span>Уникальных посетителей:</span>
+        <span class="visitor-number" id="visitorCount">0</span>
+      </div>
+      <p style="margin-top: 1rem;">© 2026 Дмитрий Захаров | визитка-портфолио</p>
+    </footer>
   </div>
 </div>
 
@@ -369,6 +398,8 @@
       setTimeout(() => {
         document.getElementById('captchaOverlay').style.display = 'none';
         document.getElementById('mainContent').classList.add('visible');
+        // После прохождения капчи запускаем счётчик
+        updateVisitorCounter();
       }, 500);
     } else {
       errorDiv.innerHTML = '<i class="fas fa-times-circle"></i> Неверный ответ! Попробуйте еще раз.';
@@ -458,6 +489,42 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
+  // ========== СЧЁТЧИК УНИКАЛЬНЫХ ПОСЕТИТЕЛЕЙ ==========
+  async function updateVisitorCounter() {
+    try {
+      const userId = getUserId();
+      const visitorRef = db.collection('visitors').doc('counter');
+      const userVisitorRef = db.collection('visitorLog').doc(userId);
+      
+      // Проверяем, засчитан ли этот пользователь
+      const userSnap = await userVisitorRef.get();
+      
+      if (!userSnap.exists) {
+        // Новый уникальный посетитель — прибавляем +1
+        await db.runTransaction(async (transaction) => {
+          const counterDoc = await transaction.get(visitorRef);
+          const newCount = (counterDoc.exists ? counterDoc.data().count : 0) + 1;
+          transaction.set(visitorRef, { count: newCount });
+          transaction.set(userVisitorRef, { 
+            userId: userId,
+            firstVisit: new Date().toISOString(),
+            counted: true
+          });
+        });
+      }
+      
+      // Показываем актуальное количество
+      const counterSnap = await visitorRef.get();
+      const count = counterSnap.exists ? counterSnap.data().count : 0;
+      document.getElementById('visitorCount').textContent = count;
+      
+    } catch (error) {
+      console.error('Ошибка счётчика:', error);
+      document.getElementById('visitorCount').textContent = '?';
+    }
+  }
+
+  // ========== ЛАЙКИ ==========
   const likeButton = document.getElementById('likeButton');
   const likeCountSpan = document.getElementById('likeCount');
   
@@ -548,6 +615,8 @@
   if (wasCaptchaPassedRecently()) {
     document.getElementById('captchaOverlay').style.display = 'none';
     document.getElementById('mainContent').classList.add('visible');
+    // Если капча уже пройдена — сразу загружаем счётчик
+    updateVisitorCounter();
   } else {
     generateCaptcha();
     document.getElementById('captchaOverlay').style.display = 'flex';
