@@ -19,111 +19,31 @@
     
     /* Капча */
     .captcha-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(5, 5, 15, 0.95);
-      backdrop-filter: blur(10px);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(5, 5, 15, 0.95); backdrop-filter: blur(10px);
+      z-index: 1000; display: flex; align-items: center; justify-content: center;
       transition: opacity 0.5s ease;
     }
     .captcha-container {
-      background: rgba(15, 20, 40, 0.9);
-      backdrop-filter: blur(20px);
-      border-radius: 2rem;
-      padding: 2.5rem;
-      border: 1px solid rgba(0, 255, 255, 0.3);
-      max-width: 450px;
-      width: 90%;
-      text-align: center;
+      background: rgba(15, 20, 40, 0.9); backdrop-filter: blur(20px);
+      border-radius: 2rem; padding: 2.5rem; border: 1px solid rgba(0, 255, 255, 0.3);
+      max-width: 450px; width: 90%; text-align: center;
       animation: fadeInUp 0.5s ease;
     }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .captcha-title {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, #fff, #0cf);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .captcha-question {
-      background: rgba(0, 0, 0, 0.4);
-      padding: 1rem;
-      border-radius: 1rem;
-      margin: 1.5rem 0;
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #0cf;
-      letter-spacing: 5px;
-    }
-    .captcha-input {
-      background: rgba(20, 30, 60, 0.8);
-      border: 1px solid rgba(0, 255, 255, 0.3);
-      border-radius: 1rem;
-      padding: 0.8rem 1rem;
-      width: 100%;
-      color: white;
-      font-size: 1.1rem;
-      text-align: center;
-      outline: none;
-      transition: all 0.3s;
-    }
-    .captcha-input:focus {
-      border-color: #0cf;
-      box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
-    }
-    .captcha-buttons {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-    .captcha-btn {
-      flex: 1;
-      padding: 0.8rem;
-      border-radius: 2rem;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .captcha-btn-submit {
-      background: linear-gradient(135deg, #0cf, #0a8);
-      color: white;
-    }
-    .captcha-btn-submit:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 204, 255, 0.4);
-    }
-    .captcha-btn-refresh {
-      background: rgba(255, 255, 255, 0.1);
-      color: #0cf;
-      border: 1px solid #0cf;
-    }
-    .captcha-btn-refresh:hover {
-      background: rgba(0, 204, 255, 0.2);
-    }
-    .captcha-error {
-      color: #ff6b6b;
-      font-size: 0.85rem;
-      margin-top: 0.8rem;
-      min-height: 2rem;
-    }
-    .main-content {
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-    .main-content.visible {
-      opacity: 1;
-    }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .captcha-title { font-size: 1.8rem; margin-bottom: 1rem; background: linear-gradient(135deg, #fff, #0cf); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .captcha-question { background: rgba(0, 0, 0, 0.4); padding: 1rem; border-radius: 1rem; margin: 1.5rem 0; font-size: 1.8rem; font-weight: bold; color: #0cf; letter-spacing: 5px; }
+    .captcha-input { background: rgba(20, 30, 60, 0.8); border: 1px solid rgba(0, 255, 255, 0.3); border-radius: 1rem; padding: 0.8rem 1rem; width: 100%; color: white; font-size: 1.1rem; text-align: center; outline: none; transition: all 0.3s; }
+    .captcha-input:focus { border-color: #0cf; box-shadow: 0 0 10px rgba(0, 204, 255, 0.3); }
+    .captcha-buttons { display: flex; gap: 1rem; margin-top: 1.5rem; }
+    .captcha-btn { flex: 1; padding: 0.8rem; border-radius: 2rem; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+    .captcha-btn-submit { background: linear-gradient(135deg, #0cf, #0a8); color: white; }
+    .captcha-btn-submit:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 204, 255, 0.4); }
+    .captcha-btn-refresh { background: rgba(255, 255, 255, 0.1); color: #0cf; border: 1px solid #0cf; }
+    .captcha-btn-refresh:hover { background: rgba(0, 204, 255, 0.2); }
+    .captcha-error { color: #ff6b6b; font-size: 0.85rem; margin-top: 0.8rem; min-height: 2rem; }
+    .main-content { opacity: 0; transition: opacity 0.5s ease; }
+    .main-content.visible { opacity: 1; }
     
     /* Остальные стили */
     .glass-card { background: rgba(15, 20, 40, 0.55); backdrop-filter: blur(12px); border-radius: 2rem; border: 1px solid rgba(80, 160, 255, 0.25); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; }
@@ -216,16 +136,6 @@
       color: #fff;
     }
 
-    /* Стиль для ссылок в карточках проектов */
-    .project-link {
-      text-decoration: none;
-      color: inherit;
-      display: block; /* Чтобы ссылка занимала всю область заголовка */
-    }
-    .project-link:hover h3 {
-      color: #0cf; /* Подсветка заголовка при наведении */
-    }
-
     /* Убрали стили для кружочков */
     .social-links, .social-icon, .social-icon a, .social-icon.disabled {
       display: none;
@@ -267,7 +177,7 @@
         <h1>Дмитрий Захаров</h1>
         <p>Создаю виртуальные миры через код и воображение.</p>
         <div class="hero-stats">
-          <div class="stat"><span class="stat-number">3+</span><br>проекта</div>
+          <div class="stat"><span class="stat-number">4+</span><br>проекта</div>
           <div class="stat"><span class="stat-number">2025</span><br>старт</div>
           <div class="stat"><span class="stat-number">Junior</span><br>уровень</div>
         </div>
@@ -305,33 +215,33 @@
     <section id="projects" class="fade-up">
       <h2 class="section-title"><i class="fas fa-rocket"></i> VR-проекты</h2>
       <div class="projects-grid">
-        <!-- ПЕРВЫЙ ПРОЕКТ — ССЫЛКА НА ЯНДЕКС ДИСК -->
         <div class="project-card">
           <div class="project-icon"><i class="fas fa-hard-hat"></i></div>
-          <a href="https://disk.yandex.ru/d/MKeSpc4VKsx2iw" target="_blank" rel="noopener noreferrer" class="project-link">
-            <h3>FeVR/ARt 2025: VR-тренажер для МЧС</h3>
-          </a>
+          <h3>FeVR/ARt 2025: VR-тренажер для МЧС</h3>
           <p>Тренажер для отработки безопасной эвакуации пострадавшего из горящего здания.</p>
           <div class="project-tech"><span class="tech-badge">Varwin</span></div>
         </div>
-        
         <div class="project-card">
           <div class="project-icon"><i class="fas fa-leaf"></i></div>
           <h3>Varwin хакатон 2026: Обучающий VR-проект</h3>
           <p>Проект в игровой форме знакомит с инвазивными растениями.</p>
           <div class="project-tech"><span class="tech-badge">Varwin</span><span class="tech-badge">Blender</span><span class="tech-badge">Python</span></div>
         </div>
-        
         <div class="project-card">
           <div class="project-icon"><i class="fas fa-gamepad"></i></div>
           <h3>Международный конкурс Varwin 2026: 3D-игра</h3>
-          <p>Игра в жанре ужасов (эскейп-рум).</p>
+          <p>Игра в жанре ужасов (эскейп-рум). Победитель (спец. приз от команды Varwin)</p>
+          <div class="project-tech"><span class="tech-badge">Varwin</span><span class="tech-badge">Blender</span><span class="tech-badge">Python</span></div>
+        </div>
+        <div class="project-card">
+          <div class="project-icon"><i class="fas fa-rocket"></i></div>
+          <h3>Креатех 2026: игра "Аварийная миссия"</h3>
+          <p>Призёр</p>
           <div class="project-tech"><span class="tech-badge">Varwin</span><span class="tech-badge">Blender</span><span class="tech-badge">Python</span></div>
         </div>
       </div>
     </section>
 
-    <!-- ОБНОВЛЁННЫЙ РАЗДЕЛ ОЛИМПИАД -->
     <section class="fade-up">
       <h2 class="section-title"><i class="fas fa-trophy"></i> Олимпиады</h2>
       <div class="olympiads-grid">
@@ -341,7 +251,6 @@
       </div>
     </section>
 
-    <!-- Раздел поддержки со ссылкой -->
     <section id="support" class="fade-up">
       <h2 class="section-title"><i class="fas fa-heart"></i> Поддержать проект</h2>
       <div class="glass-card" style="padding: 2rem; text-align: center;">
@@ -353,7 +262,6 @@
       </div>
     </section>
 
-    <!-- РАЗДЕЛ КОНТАКТОВ (БЕЗ КРУЖОЧКОВ) -->
     <section id="contact" class="fade-up">
       <h2 class="section-title"><i class="fas fa-paper-plane"></i> Контакты & аккаунты на других сайтах</h2>
       <div class="glass-card" style="padding: 2rem;">
@@ -366,7 +274,6 @@
     </section>
 
     <footer>
-      <!-- Счётчик посещений -->
       <div class="visitor-counter">
         <i class="fas fa-eye"></i>
         <span>Уникальных посетителей:</span>
@@ -424,271 +331,4 @@
     animate();
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-  })();
-
-  // ========== FIREBASE ==========
-  const firebaseConfig = {
-    apiKey: "AIzaSyClrKyJ0ZmKdThZfDAo1ja5Fs1Yo16gpvM",
-    authDomain: "portfolio-dima.firebaseapp.com",
-    projectId: "portfolio-dima",
-    storageBucket: "portfolio-dima.firebasestorage.app",
-    messagingSenderId: "561156360648",
-    appId: "1:561156360648:web:0c1e1d96c1351a8e1558fd"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-
-  // ========== СЧЁТЧИК УНИКАЛЬНЫХ ПОСЕТИТЕЛЕЙ ==========
-  async function updateVisitorCounter() {
-    try {
-      const userId = getUserId();
-      const visitorRef = db.collection('visitors').doc('counter');
-      const userVisitorRef = db.collection('visitorLog').doc(userId);
-      
-      const userSnap = await userVisitorRef.get();
-      
-      if (!userSnap.exists) {
-        await db.runTransaction(async (transaction) => {
-          const counterDoc = await transaction.get(visitorRef);
-          const newCount = (counterDoc.exists ? counterDoc.data().count : 0) + 1;
-          transaction.set(visitorRef, { count: newCount });
-          transaction.set(userVisitorRef, { 
-            userId: userId,
-            firstVisit: new Date().toISOString(),
-            counted: true
-          });
-        });
-      }
-      
-      const counterSnap = await visitorRef.get();
-      const count = counterSnap.exists ? counterSnap.data().count : 0;
-      document.getElementById('visitorCount').textContent = count;
-      
-    } catch (error) {
-      console.error('Ошибка счётчика:', error);
-      document.getElementById('visitorCount').textContent = '?';
-    }
-  }
-
-  // ========== КАПЧА ==========
-  let currentCaptchaAnswer = 0;
-  
-  function generateCaptcha() {
-    const num1 = Math.floor(Math.random() * 20) + 1;
-    const num2 = Math.floor(Math.random() * 20) + 1;
-    const operators = ['+', '-', '*'];
-    const operator = operators[Math.floor(Math.random() * operators.length)];
-    
-    let question, answer;
-    switch(operator) {
-      case '+':
-        answer = num1 + num2;
-        question = `${num1} + ${num2}`;
-        break;
-      case '-':
-        answer = num1 - num2;
-        question = `${num1} - ${num2}`;
-        break;
-      case '*':
-        answer = num1 * num2;
-        question = `${num1} × ${num2}`;
-        break;
-    }
-    
-    document.getElementById('captchaQuestion').innerHTML = question + ' = ?';
-    currentCaptchaAnswer = answer;
-  }
-  
-  function checkCaptcha() {
-    const input = document.getElementById('captchaInput').value.trim();
-    const errorDiv = document.getElementById('captchaError');
-    
-    if (parseInt(input) === currentCaptchaAnswer) {
-      localStorage.setItem('captcha_passed', 'true');
-      localStorage.setItem('captcha_time', Date.now());
-      document.getElementById('captchaOverlay').style.opacity = '0';
-      setTimeout(() => {
-        document.getElementById('captchaOverlay').style.display = 'none';
-        document.getElementById('mainContent').classList.add('visible');
-        updateVisitorCounter();
-      }, 500);
-    } else {
-      errorDiv.innerHTML = '<i class="fas fa-times-circle"></i> Неверный ответ! Попробуйте еще раз.';
-      document.getElementById('captchaInput').value = '';
-      generateCaptcha();
-    }
-  }
-  
-  function refreshCaptcha() {
-    generateCaptcha();
-    document.getElementById('captchaInput').value = '';
-    document.getElementById('captchaError').innerHTML = '';
-  }
-  
-  function wasCaptchaPassedRecently() {
-    const passed = localStorage.getItem('captcha_passed');
-    const time = localStorage.getItem('captcha_time');
-    if (passed === 'true' && time) {
-      const thirtyMinutes = 30 * 60 * 1000;
-      if (Date.now() - parseInt(time) < thirtyMinutes) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  // ========== ЛАЙКИ ==========
-  const likeButton = document.getElementById('likeButton');
-  const likeCountSpan = document.getElementById('likeCount');
-  
-  let currentCount = 0;
-  let userLiked = false;
-  let isLoading = true;
-
-  function getUserId() {
-    let id = localStorage.getItem('portfolio_user_id');
-    if (!id) {
-      id = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-      localStorage.setItem('portfolio_user_id', id);
-    }
-    return id;
-  }
-
-  const userId = getUserId();
-  const likeDocRef = db.collection('likes').doc('counter');
-  const userLikeRef = db.collection('userLikes').doc(userId);
-
-  async function loadLikes() {
-    try {
-      const [likeSnap, userSnap] = await Promise.all([
-        likeDocRef.get(),
-        userLikeRef.get()
-      ]);
-      
-      currentCount = likeSnap.exists ? likeSnap.data().count : 42;
-      userLiked = userSnap.exists && userSnap.data().liked === true;
-      
-      if (!likeSnap.exists) {
-        await likeDocRef.set({ count: 42 });
-      }
-      
-      likeCountSpan.textContent = currentCount;
-      if (userLiked) {
-        likeButton.classList.add('liked');
-      } else {
-        likeButton.classList.remove('liked');
-      }
-    } catch (error) {
-      console.error('Ошибка загрузки лайков:', error);
-      currentCount = 42;
-      likeCountSpan.textContent = currentCount;
-    }
-    isLoading = false;
-  }
-
-  async function toggleLike() {
-    if (isLoading) return;
-    isLoading = true;
-    
-    try {
-      if (!userLiked) {
-        // Постановка лайка
-        await db.runTransaction(async (transaction) => {
-          const likeDoc = await transaction.get(likeDocRef);
-          const current = likeDoc.exists ? likeDoc.data().count : 42;
-          transaction.set(likeDocRef, { count: current + 1 });
-          transaction.set(userLikeRef, { liked: true, userId: userId });
-          currentCount = current + 1;
-        });
-        userLiked = true;
-        
-        // Анимация
-        const heartIcon = likeButton.querySelector('i');
-        if (heartIcon) {
-          heartIcon.style.animation = 'none';
-          heartIcon.offsetHeight; // Триггер перезапуска анимации
-          heartIcon.style.animation = 'heartPop 0.3s ease';
-          setTimeout(() => { heartIcon.style.animation = ''; }, 300);
-        }
-      } else {
-        // Снятие лайка
-        await db.runTransaction(async (transaction) => {
-          const likeDoc = await transaction.get(likeDocRef);
-          const current = likeDoc.exists ? likeDoc.data().count : 42;
-          const newCount = Math.max(0, current - 1);
-          transaction.set(likeDocRef, { count: newCount });
-          transaction.delete(userLikeRef);
-          currentCount = newCount;
-        });
-        userLiked = false;
-      }
-      
-      likeCountSpan.textContent = currentCount;
-      if (userLiked) {
-        likeButton.classList.add('liked');
-      } else {
-        likeButton.classList.remove('liked');
-      }
-    } catch (error) {
-      console.error('Ошибка при изменении лайка:', error);
-      // Откат состояния в случае ошибки
-      await loadLikes();
-    }
-    isLoading = false;
-  }
-
-  // Привязываем обработчик к кнопке
-  if (likeButton) {
-    likeButton.addEventListener('click', toggleLike);
-  }
-
-  // ========== ИНИЦИАЛИЗАЦИЯ ==========
-  if (wasCaptchaPassedRecently()) {
-    document.getElementById('captchaOverlay').style.display = 'none';
-    document.getElementById('mainContent').classList.add('visible');
-    updateVisitorCounter();
-  } else {
-    generateCaptcha();
-    document.getElementById('captchaOverlay').style.display = 'flex';
-  }
-  
-  document.getElementById('captchaSubmit').addEventListener('click', checkCaptcha);
-  document.getElementById('captchaRefresh').addEventListener('click', refreshCaptcha);
-  document.getElementById('captchaInput').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') checkCaptcha();
-  });
-  
-  // Загружаем лайки при старте
-  loadLikes();
-
-  // Анимация появления
-  const fadeElements = document.querySelectorAll('.fade-up');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
-  fadeElements.forEach(el => observer.observe(el));
-
-  // Плавный скролл
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const targetId = this.getAttribute('href');
-      if(targetId === "#" || targetId === "") return;
-      const targetElement = document.querySelector(targetId);
-      if(targetElement) {
-        e.preventDefault();
-        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
-</script>
-</body>
-</html>
+      camera.updateProjectionMatrix(
